@@ -1,0 +1,826 @@
+/* ==========================================================================
+   Aesthetic Scrapbook & Pinterest Style - Birthday for Girlfriend
+   ========================================================================== */
+
+:root {
+    --bg-page: #FAF7F2;
+    --card-bg: #FFFFFF;
+    --card-border: #EFE8DF;
+    --primary-pink: #F4A7B9;
+    --dusty-rose: #D98394;
+    --soft-peach: #FCEADE;
+    --sage-green: #D5E2D4;
+    --warm-brown: #5C4A42;
+    --text-main: #3D322C;
+    --text-muted: #8E7D73;
+    --washi-pink: rgba(244, 167, 185, 0.65);
+    --washi-sage: rgba(213, 226, 212, 0.7);
+    --washi-yellow: rgba(254, 237, 189, 0.7);
+    --shadow-soft: 0 10px 30px rgba(92, 74, 66, 0.07), 0 2px 6px rgba(92, 74, 66, 0.04);
+    --shadow-hover: 0 16px 36px rgba(92, 74, 66, 0.12), 0 4px 10px rgba(92, 74, 66, 0.06);
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-handwriting: 'Caveat', 'Reenie Beanie', cursive;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-page);
+    background-image: 
+        radial-gradient(#E8DFD3 0.75px, transparent 0.75px),
+        radial-gradient(#E8DFD3 0.75px, var(--bg-page) 0.75px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    padding-bottom: 80px;
+}
+
+/* Floating cursor sparkle */
+.aesthetic-sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 1.2rem;
+    transform: translate(-50%, -50%);
+    animation: sparkleFloat 0.7s forwards ease-out;
+}
+
+@keyframes sparkleFloat {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+    100% { opacity: 0; transform: translate(-50%, -100%) scale(1.3) rotate(20deg); }
+}
+
+/* Container */
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ==========================================================================
+   Interactive Setup & Customization Panel (Direct on-page Input)
+   ========================================================================== */
+.setup-panel {
+    background: #FFFDF9;
+    border: 2px dashed var(--dusty-rose);
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 12px 30px rgba(217, 131, 148, 0.12);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.setup-panel.collapsed {
+    display: none;
+}
+
+.setup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #F0E6D8;
+    padding-bottom: 12px;
+}
+
+.setup-title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--dusty-rose);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.setup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.setup-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.setup-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.setup-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.setup-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #DED3C4;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #FFFFFF;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.setup-input:focus {
+    border-color: var(--dusty-rose);
+    box-shadow: 0 0 0 3px rgba(217, 131, 148, 0.15);
+}
+
+.setup-textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.file-upload-box {
+    background: #FFFFFF;
+    border: 1px dashed #D5C7B6;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-upload-box:hover {
+    border-color: var(--dusty-rose);
+    background: var(--soft-peach);
+}
+
+.setup-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+/* Floating Edit Mode Switch Pill */
+.edit-toggle-pill {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--dusty-rose);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(217, 131, 148, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.edit-toggle-pill:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: #c76d80;
+}
+
+/* Top Floating Bar */
+.nav-bar {
+    position: sticky;
+    top: 14px;
+    z-index: 100;
+    max-width: 720px;
+    margin: 14px auto 28px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 40px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--dusty-rose);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-pill {
+    background: #FFFDF9;
+    border: 1px solid #E5DCD0;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--warm-brown);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.btn-pill:hover {
+    background: var(--soft-peach);
+    border-color: var(--primary-pink);
+    transform: translateY(-1px);
+}
+
+/* Washi Tape Accent */
+.washi-tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 26px;
+    background: var(--washi-pink);
+    opacity: 0.85;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%);
+    z-index: 5;
+}
+
+.washi-sage { background: var(--washi-sage); }
+.washi-yellow { background: var(--washi-yellow); }
+
+/* Scrapbook Card Base */
+.scrapbook-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 34px 28px;
+    margin-bottom: 38px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.scrapbook-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.sticker-tag {
+    display: inline-block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--dusty-rose);
+    background: var(--soft-peach);
+    padding: 4px 12px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    line-height: 1.25;
+}
+
+.card-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 22px;
+}
+
+/* ==========================================================================
+   Hero Section: Aesthetic Intro
+   ========================================================================== */
+.hero-card {
+    text-align: center;
+    padding-top: 45px;
+    position: relative;
+}
+
+.hero-bow {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+    display: inline-block;
+    animation: gentleBob 3s ease-in-out infinite;
+}
+
+@keyframes gentleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 2.7rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.15;
+    margin-bottom: 14px;
+}
+
+.hero-title .highlight-name {
+    color: var(--dusty-rose);
+    font-style: italic;
+    border-bottom: 2px dashed var(--primary-pink);
+    padding-bottom: 2px;
+}
+
+.hero-note {
+    font-family: var(--font-handwriting);
+    font-size: 1.6rem;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 24px;
+    line-height: 1.35;
+}
+
+/* ==========================================================================
+   Interactive Vinyl Lo-Fi Player
+   ========================================================================== */
+.vinyl-player-widget {
+    background: #FFFDF9;
+    border: 1px dashed #E2D7C8;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 20px auto 0;
+    max-width: 480px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.vinyl-player-widget:hover {
+    border-color: var(--dusty-rose);
+    transform: scale(1.02);
+}
+
+.vinyl-disc {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #f4a7b9 22%, #222 23%, #222 28%, #333 29%, #1a1a1a 100%);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.5s ease;
+}
+
+.vinyl-disc.playing {
+    animation: spinVinyl 3.5s linear infinite;
+}
+
+@keyframes spinVinyl {
+    100% { transform: rotate(360deg); }
+}
+
+.track-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.track-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.track-artist {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.play-badge {
+    font-size: 1.4rem;
+    color: var(--dusty-rose);
+}
+
+/* ==========================================================================
+   Polaroid Scrapbook Photo Wall
+   ========================================================================== */
+.polaroid-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 24px;
+    margin-top: 14px;
+}
+
+.polaroid-item {
+    background: #FFFFFF;
+    padding: 12px 12px 18px 12px;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(92, 74, 66, 0.09), 0 2px 6px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    cursor: pointer;
+}
+
+.polaroid-item:nth-child(1) { transform: rotate(-2deg); }
+.polaroid-item:nth-child(2) { transform: rotate(1.5deg); }
+.polaroid-item:nth-child(3) { transform: rotate(-1.5deg); }
+
+.polaroid-item:hover {
+    transform: rotate(0deg) scale(1.05) translateY(-6px);
+    box-shadow: 0 16px 32px rgba(92, 74, 66, 0.16);
+    z-index: 10;
+}
+
+.polaroid-photo-frame {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #FAF7F2;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #F0E8DD;
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.polaroid-placeholder {
+    font-size: 3rem;
+    user-select: none;
+}
+
+.polaroid-caption {
+    font-family: var(--font-handwriting);
+    font-size: 1.35rem;
+    color: var(--text-main);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.2;
+}
+
+.polaroid-tape {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 18px;
+    background: var(--washi-yellow);
+    opacity: 0.85;
+}
+
+/* ==========================================================================
+   "Where Should We Eat?" Roulette Machine
+   ========================================================================== */
+.food-wheel-card {
+    background: #FFFDF9;
+    border: 1px solid #ECE3D7;
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+}
+
+.food-display-box {
+    min-height: 95px;
+    background: #FFFFFF;
+    border: 2px dashed #E7DDD0;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 18px;
+    transition: transform 0.2s ease;
+}
+
+.food-answer {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--dusty-rose);
+    margin-bottom: 4px;
+}
+
+.food-subtext {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.btn-aesthetic-primary {
+    background: var(--dusty-rose);
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 14px rgba(217, 131, 148, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-aesthetic-primary:hover {
+    background: #ce7385;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(217, 131, 148, 0.4);
+}
+
+/* ==========================================================================
+   Boyfriend's Statistical Breakdown
+   ========================================================================== */
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.stat-item {
+    background: #FFFDF9;
+    border: 1px solid #F0E8DD;
+    border-radius: 14px;
+    padding: 14px 18px;
+}
+
+.stat-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.stat-bar-bg {
+    height: 10px;
+    background: #F0E9DF;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(to right, var(--soft-peach), var(--dusty-rose));
+    transition: width 1s ease-in-out;
+}
+
+.stat-subtext {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   Aesthetic Coupons (Ticket / Voucher Style)
+   ========================================================================== */
+.coupons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.aesthetic-coupon {
+    background: #FFFFFF;
+    border: 1.5px dashed var(--dusty-rose);
+    border-radius: 16px;
+    padding: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.aesthetic-coupon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(217, 131, 148, 0.15);
+}
+
+.coupon-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.coupon-icon {
+    font-size: 1.5rem;
+}
+
+.coupon-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.coupon-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.coupon-btn {
+    align-self: flex-start;
+    background: var(--soft-peach);
+    border: 1px solid var(--primary-pink);
+    color: var(--dusty-rose);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.aesthetic-coupon.redeemed {
+    background: #FAF7F2;
+    border-color: #A8C3A8;
+}
+
+.aesthetic-coupon.redeemed .coupon-btn {
+    background: var(--sage-green);
+    border-color: #A8C3A8;
+    color: #406040;
+}
+
+/* ==========================================================================
+   Little Love Letters / Sticky Notes
+   ========================================================================== */
+.sticky-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.sticky-note {
+    background: #FFF9E6;
+    border: 1px solid #F0E2B6;
+    padding: 18px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(92, 74, 66, 0.06);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sticky-note:nth-child(2) { background: #FCEADE; border-color: #F3D2BF; }
+.sticky-note:nth-child(3) { background: #EAF4EA; border-color: #CFE4CF; }
+
+.sticky-note:hover {
+    transform: translateY(-4px) rotate(1deg);
+    box-shadow: 0 10px 20px rgba(92, 74, 66, 0.1);
+}
+
+.note-pin {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+}
+
+.note-text {
+    font-family: var(--font-handwriting);
+    font-size: 1.45rem;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.note-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: right;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   Final Love Letter Paper
+   ========================================================================== */
+.letter-paper {
+    background: #FFFDF9;
+    border: 1px solid #ECE2D5;
+    border-radius: 16px;
+    padding: 36px 30px;
+    box-shadow: 0 8px 24px rgba(92, 74, 66, 0.05);
+    position: relative;
+}
+
+.letter-salutation {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--dusty-rose);
+    margin-bottom: 18px;
+}
+
+.letter-body-text {
+    font-family: var(--font-handwriting);
+    font-size: 1.65rem;
+    line-height: 1.7;
+    color: #4A3C34;
+    white-space: pre-line;
+    margin-bottom: 24px;
+}
+
+.letter-signoff {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    text-align: right;
+    color: var(--text-main);
+    font-style: italic;
+}
+
+.wax-seal {
+    width: 48px;
+    height: 48px;
+    background: #A83248;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 10px rgba(168, 50, 72, 0.35);
+    margin: 15px auto 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.wax-seal:hover {
+    transform: scale(1.15) rotate(10deg);
+}
+
+/* Footer */
+.footer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .hero-title {
+        font-size: 2.1rem;
+    }
+    .scrapbook-card {
+        padding: 24px 18px;
+    }
+    .polaroid-grid {
+        grid-template-columns: 1fr;
+    }
+    .setup-grid {
+        grid-template-columns: 1fr;
+    }
+}

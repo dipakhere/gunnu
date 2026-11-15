@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 22nd Birthday, Gunnu 🎀</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Audio Player for Cinnamon Girl by Lana Del Rey -->
+    <audio id="bg-music-player" loop src="cinnamon-girl.mp3" preload="auto"></audio>
+
+    <!-- Top Sticky Navigation -->
+    <header class="nav-bar">
+        <div class="nav-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <span>🎀</span>
+            <span>Gunnu's 22nd Scrapbook</span>
+        </div>
+        <div class="nav-actions">
+            <button class="btn-pill" id="mute-btn">🔊 Sound</button>
+            <button class="btn-pill" id="toggle-setup-btn">⚙️ Edit Scrapbook</button>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- COLLAPSIBLE ON-PAGE SETUP PANEL -->
+        <section class="setup-panel collapsed" id="setup-panel">
+            <div class="setup-header">
+                <div class="setup-title">
+                    <span>🛠️</span>
+                    <span>Customize Details for Bhoomi (Gunnu)</span>
+                </div>
+                <button class="btn-pill" id="close-setup-btn">&times; Close</button>
+            </div>
+
+            <div class="setup-grid">
+                <div class="setup-field">
+                    <label class="setup-label" for="input-name">👸 Her Name:</label>
+                    <input type="text" id="input-name" class="setup-input" value="Bhoomi">
+                </div>
+                <div class="setup-field">
+                    <label class="setup-label" for="input-nick">🤍 What You Call Her (Pet name):</label>
+                    <input type="text" id="input-nick" class="setup-input" value="Gunnu">
+                </div>
+                <div class="setup-field">
+                    <label class="setup-label" for="input-age">🎂 Her Age (Born 15/11/2004):</label>
+                    <input type="number" id="input-age" class="setup-input" value="22">
+                </div>
+
+                <div class="setup-field full-width">
+                    <label class="setup-label">🎵 Her Favorite Song (.mp3):</label>
+                    <label for="song-uploader" class="file-upload-box">
+                        <span id="song-title-display">Click to choose a song (.mp3) from your computer</span>
+                        <span class="btn-pill" style="margin: 0;">Upload Song</span>
+                    </label>
+                    <input type="file" id="song-uploader" accept="audio/*" style="display: none;">
+                    <small id="song-status-badge" style="color: var(--dusty-rose); font-style: italic; margin-top: 4px;"></small>
+                </div>
+
+                <div class="setup-field full-width">
+                    <label class="setup-label" for="input-letter">💌 Love Letter for Gunnu:</label>
+                    <textarea id="input-letter" class="setup-input setup-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="setup-actions">
+                <button class="btn-aesthetic-primary" id="save-setup-btn">💾 Save & Update Everything</button>
+                <div class="btn-pill" id="copy-link-btn" style="cursor: pointer;">📋 Copy Link for Gunnu</div>
+            </div>
+            <div id="share-url-text" style="display: none;"></div>
+        </section>
+
+        <!-- HERO SECTION -->
+        <section class="scrapbook-card hero-card">
+            <div class="washi-tape"></div>
+            <div class="hero-bow">🎀</div>
+            <h1 class="hero-title">Happy 22nd Birthday, <span class="highlight-name var-name">Bhoomi</span></h1>
+            <p style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--dusty-rose); margin-bottom: 8px;">(To my sweet Gunnu 🤍)</p>
+            <p class="hero-note">Born on 15th November 2004. You're officially 22 today, and still my absolute favorite human in the entire universe ✨</p>
+
+            <!-- Interactive Vinyl Player -->
+            <div class="vinyl-player-widget" id="vinyl-player" title="Click to play Cinnamon Girl">
+                <div class="vinyl-disc" id="vinyl-disc"></div>
+                <div class="track-info">
+                    <div class="track-title">
+                        <span>Side A: Cinnamon Girl — Lana Del Rey 🍒</span>
+                    </div>
+                    <div class="track-artist">Dedicated to Gunnu by Jakhar • 15th November 2026</div>
+                </div>
+                <div class="play-badge" id="vinyl-play-icon">▶</div>
+            </div>
+        </section>
+
+        <!-- POLAROID SCRAPBOOK -->
+        <section class="scrapbook-card">
+            <div class="washi-tape washi-sage"></div>
+            <div class="sticker-tag">Memories & Stolen Hoodies</div>
+            <h2 class="card-title">A Few Sights of My Favorite Girl 📸</h2>
+            <p class="card-subtitle">Tap on any Polaroid to interact with it:</p>
+
+            <div class="polaroid-grid" id="polaroid-grid">
+                <!-- Loaded dynamically -->
+            </div>
+
+            <div class="upload-photo-btn" style="text-align: center; margin-top: 18px;">
+                <label for="photo-uploader" class="btn-pill" style="display: inline-flex; cursor: pointer;">
+                    📷 Click to Add Our Real Photos into Polaroids
+                </label>
+                <input type="file" id="photo-uploader" accept="image/*" multiple style="display: none;">
+            </div>
+        </section>
+
+        <!-- "WHERE SHOULD WE EAT?" ROULETTE -->
+        <section class="scrapbook-card">
+            <div class="washi-tape washi-yellow"></div>
+            <div class="sticker-tag">Relationship Science</div>
+            <h2 class="card-title">The "Where Should We Eat?" Decider 🍽️</h2>
+            <p class="card-subtitle">To save Jakhar & Gunnu from the eternal question of <em>"Kuch bhi chalega"</em>:</p>
+
+            <div class="food-wheel-card">
+                <div class="food-display-box" id="food-display-box">
+                    <div class="food-answer" id="food-answer">"I don't mind, Jakhar you pick."</div>
+                    <div class="food-subtext" id="food-subtext">(Proceeds to veto all 5 places Jakhar suggests 😂)</div>
+                </div>
+                <button class="btn-aesthetic-primary" id="spin-food-btn">🎲 Spin for an Answer</button>
+            </div>
+        </section>
+
+        <!-- BOYFRIEND'S STATISTICAL BREAKDOWN -->
+        <section class="scrapbook-card">
+            <div class="washi-tape"></div>
+            <div class="sticker-tag">Official Metrics by Jakhar</div>
+            <h2 class="card-title">A Statistical Breakdown of Gunnu 📊</h2>
+            <p class="card-subtitle">Scientific observations gathered across 22 years of Bhoomi:</p>
+
+            <div class="stats-list">
+                <div class="stat-item">
+                    <div class="stat-label-row">
+                        <span>🛌 Daily Nap Efficiency</span>
+                        <span style="color: var(--dusty-rose);">100%</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="stat-subtext">Gunnu can fall asleep anywhere if there's a cozy blanket nearby.</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-label-row">
+                        <span>🐕 Ability to Walk Past a Cute Puppy Silently</span>
+                        <span style="color: var(--dusty-rose);">0%</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" style="width: 2%;"></div>
+                    </div>
+                    <div class="stat-subtext">Physically impossible for Gunnu not to gasp and say <em>"Awww puppy!"</em></div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-label-row">
+                        <span>🧥 Wardrobe Ownership of Jakhar's Hoodies</span>
+                        <span style="color: var(--dusty-rose);">92%</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" style="width: 92%;"></div>
+                    </div>
+                    <div class="stat-subtext">Jakhar's oversized hoodies legally belong to Gunnu now. No takebacks.</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-label-row">
+                        <span>🥶 Temperature of Gunnu's Feet Under the Blanket</span>
+                        <span style="color: var(--dusty-rose);">-40°C Arctic</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" style="width: 95%;"></div>
+                    </div>
+                    <div class="stat-subtext">Used as a weapon of mass freezing placed directly against Jakhar's legs.</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-label-row">
+                        <span>❤️ How Much Jakhar Loves Gunnu</span>
+                        <span style="color: var(--dusty-rose);">∞ (Way Off the Charts)</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill" style="width: 100%; background: var(--dusty-rose);"></div>
+                    </div>
+                    <div class="stat-subtext">Even with all the stolen fries, frozen feet, and mood swings.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STICKY NOTES -->
+        <section class="scrapbook-card">
+            <div class="washi-tape washi-sage"></div>
+            <div class="sticker-tag">Sticky Notes for Gunnu</div>
+            <h2 class="card-title">Little Things I Love About You 💌</h2>
+            <p class="card-subtitle">Tap each note for a little surprise:</p>
+
+            <div class="sticky-notes-grid">
+                <div class="sticky-note">
+                    <div class="note-pin">📌</div>
+                    <div class="note-text">The little happy wiggle dance Gunnu does whenever good food or momos get served 🥟✨</div>
+                    <div class="note-hint">Tap note 🤍</div>
+                </div>
+
+                <div class="sticky-note">
+                    <div class="note-pin">📌</div>
+                    <div class="note-text">Friendly reminder: You're 22 today, Bhoomi, and effortlessly the prettiest girl in every single room 🌸</div>
+                    <div class="note-hint">Tap note 🤍</div>
+                </div>
+
+                <div class="sticky-note">
+                    <div class="note-pin">📌</div>
+                    <div class="note-text">Gunnu takes 80 selfies, complains about all 80, and looks breathtaking in literally every single one 📸</div>
+                    <div class="note-hint">Tap note 🤍</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AESTHETIC COUPONS -->
+        <section class="scrapbook-card">
+            <div class="washi-tape washi-yellow"></div>
+            <div class="sticker-tag">Gunnu's Birthday Privileges</div>
+            <h2 class="card-title">Coupons for My Girl 🎟️</h2>
+            <p class="card-subtitle">Legally binding vouchers for Gunnu. Tap to redeem anytime:</p>
+
+            <div class="coupons-grid">
+                <div class="aesthetic-coupon">
+                    <div>
+                        <div class="coupon-header">
+                            <span class="coupon-icon">☕</span>
+                            <div class="coupon-title">Cold Coffee / Boba Run</div>
+                        </div>
+                        <p class="coupon-desc">Redeemable for Gunnu's favorite coffee, dessert, or sweet drink fetched by Jakhar.</p>
+                    </div>
+                    <button class="coupon-btn">Redeem Voucher</button>
+                </div>
+
+                <div class="aesthetic-coupon">
+                    <div>
+                        <div class="coupon-header">
+                            <span class="coupon-icon">💆</span>
+                            <div class="coupon-title">20-Min Massage & Head Scratch</div>
+                        </div>
+                        <p class="coupon-desc">Unconditional shoulder rub or hair playing with zero complaining from Jakhar.</p>
+                    </div>
+                    <button class="coupon-btn">Redeem Voucher</button>
+                </div>
+
+                <div class="aesthetic-coupon">
+                    <div>
+                        <div class="coupon-header">
+                            <span class="coupon-icon">🏆</span>
+                            <div class="coupon-title">"Gunnu is Always Right" Pass</div>
+                        </div>
+                        <p class="coupon-desc">Use this to automatically win any argument today. Jakhar must immediately concede defeat.</p>
+                    </div>
+                    <button class="coupon-btn">Redeem Voucher</button>
+                </div>
+
+                <div class="aesthetic-coupon">
+                    <div>
+                        <div class="coupon-header">
+                            <span class="coupon-icon">🎬</span>
+                            <div class="coupon-title">Movie / Show Dictatorship</div>
+                        </div>
+                        <p class="coupon-desc">Gunnu picks whatever movie, series, or reels we watch without any protests.</p>
+                    </div>
+                    <button class="coupon-btn">Redeem Voucher</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE LOVE LETTER -->
+        <section class="scrapbook-card">
+            <div class="washi-tape"></div>
+            <div class="sticker-tag">From Jakhar's Heart</div>
+            <h2 class="card-title">A Birthday Note for My Gunnu 💌</h2>
+
+            <div class="letter-paper">
+                <div class="letter-salutation">My Dearest <span class="var-name">Bhoomi</span> (<span class="var-nick">Gunnu</span> ❤️),</div>
+                <div class="letter-body-text" id="letter-body">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="letter-signoff">Forever yours,<br><span class="var-sender">Jakhar</span> ❤️</div>
+                <div class="wax-seal" id="letter-wax-seal" title="Tap the seal!">❤️</div>
+            </div>
+        </section>
+
+        <p class="footer-text">Made with endless love by Jakhar for Bhoomi (Gunnu) • Happy 22nd Birthday, my girl 🧸✨</p>
+
+    </main>
+
+    <!-- Floating Quick Edit Pill -->
+    <button class="edit-toggle-pill" onclick="document.getElementById('setup-panel').classList.toggle('collapsed'); window.scrollTo({top: 0, behavior: 'smooth'});">
+        <span>✏️</span>
+        <span>Edit Scrapbook</span>
+    </button>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="confetti.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
